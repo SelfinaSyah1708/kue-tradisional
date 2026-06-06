@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dapur Kue Nusantara — Pesan Kue Tradisional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <nav class="nav">
+      <div class="nav-brand">
+        <span class="brand-icon">🍰</span>
+        <span class="brand-name">Dapur Kue Nusantara</span>
+      </div>
+      <a href="admin.html" class="btn-admin">Dashboard Admin →</a>
+    </nav>
+    <div class="hero-content">
+      <p class="hero-tagline">Warisan Rasa yang Tak Lekang oleh Waktu</p>
+      <h1 class="hero-title">Kue Tradisional<br /><em>Buatan Tangan</em></h1>
+      <p class="hero-sub">Dipesan hari ini, dikirim dengan penuh cinta</p>
+      <a href="#menu" class="btn-pesan">Lihat Menu ↓</a>
+    </div>
+  </header>
+
+  <!-- MENU -->
+  <section id="menu" class="menu-section">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow">Menu Pilihan</p>
+        <h2 class="section-title">Kue Kami Hari Ini</h2>
+      </div>
+      <div class="menu-grid" id="menuGrid"></div>
+    </div>
+  </section>
+
+  <!-- CART FLOATING -->
+  <div class="cart-bar" id="cartBar">
+    <div class="cart-bar-inner">
+      <span class="cart-icon">🛒</span>
+      <span class="cart-count" id="cartCount">0 item</span>
+      <span class="cart-total" id="cartTotal">Rp 0</span>
+      <button class="btn-checkout" onclick="openCheckout()">Pesan Sekarang →</button>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeCheckout()">✕</button>
+      <h2 class="modal-title">🛒 Detail Pesanan</h2>
+
+      <div class="order-items" id="orderItems"></div>
+      <div class="order-total-row">
+        <span>Total</span>
+        <span class="order-total-price" id="modalTotal">Rp 0</span>
+      </div>
+
+      <div class="form-section">
+        <h3>Informasi Pengiriman</h3>
+        <div class="form-group">
+          <label>Nama Lengkap *</label>
+          <input type="text" id="namaInput" placeholder="Contoh: Siti Rahma" />
+        </div>
+        <div class="form-group">
+          <label>Nomor WhatsApp *</label>
+          <input type="tel" id="waInput" placeholder="Contoh: 08123456789" />
+        </div>
+        <div class="form-group">
+          <label>Alamat Lengkap *</label>
+          <textarea id="alamatInput" rows="3" placeholder="Jalan, nomor rumah, kelurahan, kecamatan..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Catatan (Opsional)</label>
+          <textarea id="catatanInput" rows="2" placeholder="Contoh: tolong dikemas cantik, untuk hadiah"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Metode Pembayaran</label>
+          <select id="pembayaranInput">
+            <option value="Transfer BCA">Transfer BCA</option>
+            <option value="Transfer BRI">Transfer BRI</option>
+            <option value="GoPay">GoPay</option>
+            <option value="OVO">OVO</option>
+            <option value="Dana">Dana</option>
+            <option value="COD (Bayar di Tempat)">COD (Bayar di Tempat)</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn-submit" onclick="submitOrder()">
+        <span>Konfirmasi & Kirim Pesanan via WhatsApp</span>
+      </button>
+      <p class="modal-note">Pesanan akan dikirim ke WhatsApp pemilik & kamu akan mendapat konfirmasi.</p>
+    </div>
+  </div>
+
+  <!-- SUCCESS TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <footer class="footer">
+    <p>© 2025 Dapur Kue Nusantara · Dibuat dengan ❤️ di Indonesia</p>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/customer.js"></script>
+</body>
+</html>

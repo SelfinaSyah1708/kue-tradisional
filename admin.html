@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard — Dapur Kue Nusantara</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+  </head>
+  <body class="admin-body">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-icon">🍰</span>
+        <div>
+          <p class="sidebar-brand-name">Dapur Kue</p>
+          <p class="sidebar-brand-sub">Nusantara</p>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link active" onclick="showTab('dashboard')">
+          <span class="sidebar-icon">📊</span> Dashboard
+        </a>
+        <a href="#" class="sidebar-link" onclick="showTab('pesanan')">
+          <span class="sidebar-icon">📋</span> Pesanan
+          <span class="badge-count" id="badgePesanan">0</span>
+        </a>
+        <a href="#" class="sidebar-link" onclick="showTab('menu')">
+          <span class="sidebar-icon">🍮</span> Kelola Menu
+        </a>
+        <a href="#" class="sidebar-link" onclick="showTab('pengaturan')">
+          <span class="sidebar-icon">⚙️</span> Pengaturan
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="index.html" class="sidebar-link">
+          <span class="sidebar-icon">🏪</span> Lihat Toko
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+      <!-- HEADER -->
+      <div class="admin-topbar">
+        <div>
+          <h1 class="admin-page-title" id="pageTitle">Dashboard</h1>
+          <p class="admin-page-sub" id="pageSub">Selamat datang kembali!</p>
+        </div>
+        <div class="topbar-right">
+          <div class="realtime-dot"></div>
+          <span class="realtime-label">Live</span>
+          <button class="btn-notif" onclick="testWA()" title="Test WhatsApp">
+            📱 Test WA
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB: DASHBOARD -->
+      <div id="tab-dashboard" class="tab-content active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <p class="stat-label">Total Pesanan</p>
+            <p class="stat-value" id="statTotal">0</p>
+            <p class="stat-change">Semua waktu</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Pesanan Baru</p>
+            <p class="stat-value accent" id="statBaru">0</p>
+            <p class="stat-change">Menunggu konfirmasi</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Pendapatan</p>
+            <p class="stat-value" id="statRevenue">Rp 0</p>
+            <p class="stat-change">Total terkonfirmasi</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">Selesai</p>
+            <p class="stat-value success" id="statSelesai">0</p>
+            <p class="stat-change">Pesanan selesai</p>
+          </div>
+        </div>
+
+        <div class="dashboard-bottom">
+          <div class="card">
+            <h3 class="card-title">Pesanan Terbaru</h3>
+            <div id="recentOrders"></div>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Menu Terlaris</h3>
+            <div id="topMenu"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: PESANAN -->
+      <div id="tab-pesanan" class="tab-content">
+        <div class="filter-bar">
+          <button
+            class="filter-btn active"
+            onclick="filterOrders('semua', this)"
+          >
+            Semua
+          </button>
+          <button class="filter-btn" onclick="filterOrders('baru', this)">
+            🟡 Baru
+          </button>
+          <button class="filter-btn" onclick="filterOrders('diproses', this)">
+            🔵 Diproses
+          </button>
+          <button class="filter-btn" onclick="filterOrders('selesai', this)">
+            🟢 Selesai
+          </button>
+          <button class="filter-btn" onclick="filterOrders('dibatalkan', this)">
+            🔴 Dibatalkan
+          </button>
+          <input
+            type="text"
+            class="search-input"
+            id="searchOrder"
+            placeholder="🔍 Cari nama / nomor..."
+            oninput="renderOrders()"
+          />
+        </div>
+        <div id="ordersTable"></div>
+      </div>
+
+      <!-- TAB: MENU -->
+      <div id="tab-menu" class="tab-content">
+        <div class="menu-admin-header">
+          <h3>Daftar Menu</h3>
+          <button class="btn-add" onclick="openMenuForm()">
+            + Tambah Menu
+          </button>
+        </div>
+        <div id="menuAdminGrid"></div>
+      </div>
+
+      <!-- TAB: PENGATURAN -->
+      <div id="tab-pengaturan" class="tab-content">
+        <div class="settings-card">
+          <h3>⚙️ Pengaturan Toko</h3>
+          <div class="form-group">
+            <label>Nama Toko</label>
+            <input type="text" id="setNamaToko" value="Dapur Kue Nusantara" />
+          </div>
+          <div class="form-group">
+            <label>Nomor WhatsApp Admin (tanpa +62)</label>
+            <input type="tel" id="setWaAdmin" placeholder="6283892062700" />
+            <small>Contoh: 6283892062700 (ganti 0 dengan 62)</small>
+          </div>
+          <div class="form-group">
+            <label>Jam Operasional</label>
+            <input type="text" id="setJam" placeholder="06.00 – 23.00 WIB" />
+          </div>
+          <div class="form-group">
+            <label>Ongkos Kirim Default (Rp)</label>
+            <input type="number" id="setOngkir" value="15000" />
+          </div>
+          <button class="btn-save" onclick="saveSetting()">
+            💾 Simpan Pengaturan
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- MODAL DETAIL PESANAN -->
+    <div class="modal-overlay" id="orderDetailModal">
+      <div class="modal modal-admin">
+        <button class="modal-close" onclick="closeOrderDetail()">✕</button>
+        <div id="orderDetailContent"></div>
+      </div>
+    </div>
+
+    <!-- MODAL TAMBAH MENU -->
+    <div class="modal-overlay" id="menuFormModal">
+      <div class="modal modal-admin">
+        <button class="modal-close" onclick="closeMenuForm()">✕</button>
+        <h2 class="modal-title" id="menuFormTitle">Tambah Menu</h2>
+        <input type="hidden" id="menuFormId" />
+        <div class="form-group">
+          <label>Nama Kue *</label>
+          <input
+            type="text"
+            id="menuNama"
+            placeholder="Contoh: Klepon Pandan"
+          />
+        </div>
+        <div class="form-group">
+          <label>Emoji / Icon</label>
+          <input type="text" id="menuEmoji" placeholder="🍡" maxlength="4" />
+        </div>
+        <div class="form-group">
+          <label>Harga (Rp) *</label>
+          <input type="number" id="menuHarga" placeholder="25000" />
+        </div>
+        <div class="form-group">
+          <label>Satuan</label>
+          <input
+            type="text"
+            id="menuSatuan"
+            placeholder="per porsi / per kotak / per loyang"
+          />
+        </div>
+        <div class="form-group">
+          <label>Deskripsi</label>
+          <textarea
+            id="menuDeskripsi"
+            rows="3"
+            placeholder="Deskripsi singkat kue..."
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label>Kategori</label>
+          <select id="menuKategori">
+            <option>Jajanan Pasar</option>
+            <option>Kue Basah</option>
+            <option>Kue Kering</option>
+            <option>Minuman</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Stok Tersedia</label>
+          <select id="menuStok">
+            <option value="true">✅ Tersedia</option>
+            <option value="false">❌ Habis</option>
+          </select>
+        </div>
+        <button class="btn-save" onclick="saveMenu()">💾 Simpan Menu</button>
+      </div>
+    </div>
+
+    <!-- TOAST NOTIF -->
+    <div class="toast" id="toast"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>
